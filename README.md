@@ -9,6 +9,7 @@ and encoded with **ffmpeg** at 1920×1080, 60 fps. Screens come from the Strata 
 | v1 | `index.html` / `scene.js` | Logo lock-up → "Democratizing on-chain yields." → Markets (push through View Market) → Ethena market: tooltip rides the price curve, Junior → Senior → buy 2,000 USDe (snap in while typing, status → success) → Portfolio (jrUSDe expands into its networks) → Points (leaderboard) → 15-screen montage → lock-up + strata.markets. Every screen centred at 0.8 with background visible; the camera only moves to follow action. ~41 s loop |
 | v2 | `index2.html` / `scene2.js` | v1 + React Bits *Aurora* background (vendored in `rb/`, bundled to `assets/rb.js`) in Strata blue + Junior teal, rotated to rise from the left and clocked by the video timeline so frames are deterministic |
 | v3 | `index3.html` / `scene3.js` | v1 + React Bits *Silk* background, subtle (deep navy fabric, faint Strata-blue sheen, 55% over the dark base), clocked by the video timeline |
+| v4 | `index4.html` / `scene4.js` | v3 with the background locked: no parallax or drift when the camera whips, pushes or zooms — only the Silk ripples |
 
 Rendered videos are in `videos/`.
 
@@ -21,7 +22,7 @@ git clone https://github.com/shantanujha97/Strata-Video && cd Strata-Video
 npm install                      # gsap, sharp, playwright, DM Sans / DM Mono
 npx playwright install chromium
 npm run serve &                  # static server on 127.0.0.1:8125
-npm run render                   # → Strata_Demo_v3.mp4
+npm run render                   # → Strata_Demo_v4.mp4
 ```
 
 Stills: `PORT=8125 node render.js stills 3.6,12.5,19.4 out/`. To render faster, split the range across terminals
