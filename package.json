@@ -1,0 +1,20 @@
+{
+  "name": "strata-video",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "python3 -m http.server 8125 --bind 127.0.0.1",
+    "render": "PORT=8125 node render.js video Strata_Demo_v1.mp4 60 0 41.0333"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource/dm-mono": "^5.3.0",
+    "gsap": "^3.12.5",
+    "playwright": "^1.63.0",
+    "sharp": "^0.33.5"
+  }
+}

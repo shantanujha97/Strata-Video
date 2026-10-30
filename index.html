@@ -1,0 +1,118 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<title>Strata demo v1</title>
+<style>
+@font-face{font-family:DMS;src:url(fonts/dm-sans-latin-opsz-normal.woff2) format('woff2');font-weight:100 1000}
+@font-face{font-family:DMM;src:url(fonts/dm-mono-latin-500-normal.woff2) format('woff2');font-weight:500}
+html,body{margin:0;background:#000;overflow:hidden}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:#050608;font-family:DMS,sans-serif;color:#fff}
+.abs{position:absolute;left:0;top:0}
+canvas{position:absolute;left:0;top:0}
+.world{position:absolute;left:0;top:0;width:1440px;height:810px;transform-origin:0 0;backface-visibility:hidden}
+.world img{position:absolute;display:block}
+.card{position:absolute;left:0;top:0;width:1440px;height:810px;overflow:hidden;border-radius:16px;background:#0c0c0c;box-shadow:0 0 0 1px rgba(255,255,255,.09),0 2px 4px rgba(0,0,0,.35),0 30px 80px rgba(0,0,0,.55)}
+.page{position:absolute;left:0;top:0;width:1440px;will-change:transform}
+.dim{position:absolute;left:0;top:0;width:1440px;height:810px;background:#0c0c0c;opacity:0}
+.modal{position:absolute;transform-origin:50% 50%;opacity:0}
+.hov{position:absolute;opacity:0;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.hovr{position:absolute;opacity:0;background:rgba(255,255,255,.045)}
+.head{position:absolute;left:0;width:1920px;text-align:center;font-weight:600;letter-spacing:-0.035em;font-variation-settings:'opsz' 40;transform-origin:960px 50%;will-change:transform;white-space:nowrap}
+.head span{display:inline-block;margin:0;position:relative}
+.head .acc{padding:0 .12em}
+.head .acc i{position:absolute;left:0;top:.1em;bottom:.02em;width:100%;background:#2c6eff;transform-origin:0 50%;transform:scaleX(0);z-index:-1}
+.head .acc b{font-weight:inherit;position:relative}
+#tip{position:absolute;left:0;top:0;width:126px;opacity:0}
+#tip .box{background:#d0d6d9;border-radius:4px;padding:4px 8px;color:#0c0c0c;font-size:14px;line-height:20px}
+#tip .t1{font-family:DMS;font-weight:600;font-variation-settings:'opsz' 36}
+#tip .t2{display:flex;justify-content:space-between;font-family:DMS;font-weight:500;font-variation-settings:'opsz' 36}
+#tip .t2 em{font-style:normal;font-family:DMM;font-weight:500}
+#tip svg{display:block;margin:0 auto}
+#tdot{position:absolute;width:8px;height:8px;border-radius:50%;background:#d0d6d9;box-shadow:0 0 0 2px #2c6eff;opacity:0}
+#black{position:absolute;inset:0;background:#000;opacity:0}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 58%,rgba(0,0,0,.5) 100%);pointer-events:none}
+#endtag{position:absolute;left:0;width:1920px;top:612px;text-align:center;font-family:DMM;font-weight:500;font-size:22px;letter-spacing:.08em;color:rgba(208,214,217,.7);opacity:0}
+</style></head>
+<body>
+<div id="stage">
+  <canvas id="bg" width="1920" height="1080" style="left:-60px;top:-40px;width:2040px;height:1160px"></canvas>
+
+  <!-- A · Markets -->
+  <div id="wA" class="world"><div class="card">
+    <img src="assets/mk_list.jpg" style="left:0;top:0;width:1440px;height:810px">
+    <div id="hovA" class="hov" style="left:8px;top:120px;width:689px;height:657px;border-radius:12px"></div>
+    <div id="btnA" class="abs" style="left:40px;top:729px;width:664px;height:47px;background:rgba(255,255,255,.14);opacity:0"></div>
+  </div></div>
+
+  <!-- B · Ethena market: Junior → Senior, chart hover -->
+  <div id="wB" class="world"><div class="card">
+    <div id="pgB" class="page" style="height:1079px">
+      <img src="assets/mkt_jr.jpg" style="left:0;top:0;width:1440px;height:1079px">
+      <img id="bSr" src="assets/mkt_sr.jpg" style="left:0;top:0;width:1440px;height:1079px;opacity:0">
+      <div id="hovTab" class="hovr" style="left:8px;top:466px;width:393px;height:64px;border-radius:8px"></div>
+      <div id="tdot"></div>
+      <div id="tip"><div class="box"><div class="t1">Price</div><div class="t2"><span id="tMon">May</span><em id="tVal">$1.74B</em></div></div><svg width="8" height="5" viewBox="0 0 8 5"><path d="M0 0H8L4 5Z" fill="#d0d6d9"/></svg></div>
+    </div>
+  </div></div>
+
+  <!-- C · Ethena market: buy flow -->
+  <div id="wC" class="world"><div class="card">
+    <div id="pgC" class="page" style="height:1079px">
+      <img src="assets/mkt_sr.jpg" style="left:0;top:0;width:1440px;height:1079px">
+      <div id="inC" class="abs" style="left:1123px;top:554px;width:284px;height:139px;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(44,110,255,.9);opacity:0"></div>
+      <img class="buyst" src="assets/buy_2.png" style="left:810px;top:466px;width:622px;height:569px;opacity:0">
+      <img class="buyst" src="assets/buy_20.png" style="left:810px;top:466px;width:622px;height:569px;opacity:0">
+      <img class="buyst" src="assets/buy_200.png" style="left:810px;top:466px;width:622px;height:569px;opacity:0">
+      <img class="buyst" src="assets/buy_2000.png" style="left:810px;top:466px;width:622px;height:569px;opacity:0">
+      <div id="caretC" class="abs" style="left:1386px;top:637px;width:2px;height:40px;background:#d0d6d9;opacity:0"></div>
+      <div id="btnC" class="abs" style="left:834px;top:882px;width:574px;height:47px;background:rgba(255,255,255,.16);opacity:0"></div>
+    </div>
+    <div id="dimC" class="dim"></div>
+    <img id="mStat" class="modal" src="assets/m_status.png" style="left:458px;top:325px;width:524px;height:160px">
+    <img id="mOk" class="modal" src="assets/m_success.png" style="left:458px;top:261px;width:524px;height:288px">
+  </div></div>
+
+  <!-- D · Portfolio: jrUSDe expands into its networks -->
+  <div id="wD" class="world"><div class="card">
+    <div id="pgD" class="page" style="height:1052px">
+      <img id="dClosed" src="assets/pf_closed.jpg" style="left:0;top:0;width:1440px;height:872px">
+      <img id="dOpen" src="assets/pf_open.jpg" style="left:0;top:0;width:1440px;height:1052px;opacity:0">
+      <div id="dLowWrap" class="abs" style="left:0;top:732px;width:1440px;height:140px;overflow:hidden;opacity:0"><img id="dLow" src="assets/pf_closed.jpg" style="left:0;top:-732px;width:1440px;height:872px"></div>
+      <div id="hovD" class="hovr" style="left:12px;top:660px;width:1416px;height:72px"></div>
+    </div>
+  </div></div>
+
+  <!-- E · Points → leaderboard -->
+  <div id="wE" class="world"><div class="card">
+    <img src="assets/pt_base.jpg" style="left:0;top:0;width:1440px;height:1202px">
+    <div id="btnE" class="abs" style="left:511px;top:233px;width:173px;height:46px;background:rgba(255,255,255,.1);opacity:0"></div>
+    <div id="dimE" class="dim"></div>
+    <img id="mLb" class="modal" src="assets/m_leaderboard.png" style="left:458px;top:24px;width:524px;height:762px">
+    <div id="hovYou" class="hovr" style="left:468px;top:618px;width:504px;height:66px;background:rgba(44,110,255,.12)"></div>
+  </div></div>
+
+  <!-- M · montage: locked off, the page underneath swaps -->
+  <div id="wM" class="world"><div class="card" id="mCard"></div></div>
+
+  <!-- screen space -->
+  <div id="glow" class="abs" style="width:1000px;height:1000px;border-radius:50%;background:radial-gradient(circle,rgba(44,110,255,.32) 0%,rgba(44,110,255,.10) 38%,rgba(0,0,0,0) 70%);opacity:0"></div>
+  <svg id="logo" class="abs" width="1920" height="1080" viewBox="0 0 1920 1080" style="overflow:visible">
+    <g id="gLogo"><g id="gTop"><path id="pTop" fill="#d0d6d9"/></g><g id="gBot"><path id="pBot" fill="#d0d6d9"/></g><g id="gLetters"></g></g>
+  </svg>
+  <div id="endtag">STRATA.MARKETS</div>
+  <div id="h1" class="head" style="top:478px;font-size:88px"></div>
+  <div id="card0" class="head" style="top:470px;font-size:104px"></div>
+  <div id="card1" class="head" style="top:470px;font-size:100px"></div>
+  <div id="card2" class="head" style="top:470px;font-size:104px"></div>
+  <div id="card3" class="head" style="top:476px;font-size:96px"></div>
+  <div id="cursor" class="abs" style="width:1px;height:1px">
+    <svg id="curArrow" class="abs" width="34" height="42" viewBox="0 0 18 22" style="left:-4px;top:-3px"><path d="M2 1.5L2 18.5L6.5 14.2L9.6 21L12.6 19.7L9.6 13H16L2 1.5Z" fill="#fff" stroke="#0A0B0E" stroke-width="1.3" stroke-linejoin="round"/></svg>
+    <svg id="curHand" class="abs" width="34" height="40" viewBox="0 0 24 28" style="left:-12.4px;top:-2.6px;opacity:0"><path d="M8.8 2.2c-1.1 0-2 .9-2 2v9.4l-1.4-1.3c-.8-.8-2.1-.8-2.9 0s-.8 2.1 0 2.9l5.4 5.8c1.2 1.3 2.8 2 4.5 2h2.4c3.4 0 6.2-2.8 6.2-6.2v-4.6c0-1.1-.9-2-2-2-.4 0-.8.1-1.1.3-.2-.9-1-1.6-2-1.6-.5 0-1 .2-1.4.5-.3-.8-1-1.3-1.9-1.3-.4 0-.8.1-1.1.3V4.2c0-1.1-.9-2-2-2z" fill="#fff" stroke="#0A0B0E" stroke-width="1.25" stroke-linejoin="round"/><path d="M10.8 12.2v4.2M13.9 12.8v3.6M16.9 13.4v3" stroke="#0A0B0E" stroke-width="1.05" stroke-linecap="round"/></svg>
+  </div>
+  <div id="vig"></div>
+  <div id="black"></div>
+</div>
+<script src="node_modules/gsap/dist/gsap.min.js"></script>
+<script src="node_modules/gsap/dist/CustomEase.min.js"></script>
+<script src="logo.js"></script>
+<script src="scene.js"></script>
+</body></html>
