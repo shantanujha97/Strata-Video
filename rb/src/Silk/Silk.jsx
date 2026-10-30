@@ -420,6 +420,7 @@ const Silk = ({
       last = now;
       const flowing = !s.paused && !reduce && s.speed !== 0;
       if (flowing) state.flow += dt * 0.1 * s.speed;
+      if (window.__bgTime !== undefined) state.flow = window.__bgTime * 0.1 * s.speed;   // video: absolute time from the timeline (deterministic frames)
       if (!s.intro || reduce) state.intro = 1;
       else if (state.intro < 1) state.intro = Math.min(1, state.intro + dt / INTRO_SECONDS);
 
