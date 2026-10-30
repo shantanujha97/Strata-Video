@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "python3 -m http.server 8125 --bind 127.0.0.1",
-    "render": "PORT=8125 node render.js video Strata_Demo_v1.mp4 60 0 41.0333"
+    "render": "PORT=8125 PAGE=index2.html node render.js video Strata_Demo_v2.mp4 60 0 41.0333"
   },
   "keywords": [],
   "author": "",
